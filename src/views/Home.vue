@@ -4,12 +4,18 @@
       <!-- task header start  -->
       <div class="d-flex justify-content-between">
         <navbar msg="Task Manager" />
-        <Button type="btn-primary" text="Add Task" />
+        <Button
+          @toggle-button-task="toggleButton"
+          :type="showAddTask ? 'btn-danger' : 'btn-primary'"
+          :text="showAddTask ? 'Close Task' : 'Add Task'"
+        />
       </div>
       <!-- task header end -->
       <hr />
       <!-- add task start  -->
-      <add-task />
+      <div v-show="showAddTask">
+        <add-task @add-task="addTask" />
+      </div>
       <!-- add task end -->
       <hr />
       <!-- task body start  -->
@@ -41,9 +47,16 @@ export default {
   data() {
     return {
       tasks: [],
+      showAddTask: false,
     };
   },
   methods: {
+    toggleButton() {
+      this.showAddTask = !this.showAddTask;
+    },
+    addTask(task) {
+      this.tasks = [...this.tasks, task];
+    },
     deleteTask(id) {
       if (confirm("Are you sure?")) {
         this.tasks = this.tasks.filter((task) => task.id !== id);

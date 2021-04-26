@@ -1,5 +1,7 @@
 <template>
-  <button type="button" :class="`btn ${type}`">{{ text }}</button>
+  <button @click="onClick()" type="button" :class="`btn ${type}`">
+    {{ text }}
+  </button>
 </template>
 
 <script>
@@ -8,6 +10,11 @@ export default {
   props: {
     text: String,
     type: String,
+  },
+  methods: {
+    onClick() {
+      this.$emit("toggle-button-task");
+    },
   },
 };
 </script>
