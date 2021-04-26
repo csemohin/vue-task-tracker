@@ -54,8 +54,16 @@ export default {
     toggleButton() {
       this.showAddTask = !this.showAddTask;
     },
-    addTask(task) {
-      this.tasks = [...this.tasks, task];
+    async addTask(task) {
+      const res = await fetch("http://localhost:5000/tasks", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(task),
+      });
+      const data = res.json();
+      this.tasks = [...this.tasks, data];
     },
     deleteTask(id) {
       if (confirm("Are you sure?")) {
@@ -67,28 +75,19 @@ export default {
         item.id == id ? { ...item, reminder: !item.reminder } : item
       );
     },
+    async fetchTasks() {
+      const res = await fetch("http://localhost:5000/tasks");
+      const data = res.json();
+      return data;
+    },
+    async fetchTask(id) {
+      const res = await fetch(`http://localhost:5000/tasks/${id}`);
+      const data = res.json();
+      return data;
+    },
   },
-  created() {
-    this.tasks = [
-      {
-        id: 1,
-        text: "Doctor Appoinment",
-        day: "March 1st at 2:30pm",
-        reminder: false,
-      },
-      {
-        id: 2,
-        text: "Class Work",
-        day: "March 2st at 2:30pm",
-        reminder: false,
-      },
-      {
-        id: 3,
-        text: "Family Time",
-        day: "December 5st at 2:30pm",
-        reminder: true,
-      },
-    ];
+  async created() {
+    this.tasks = await this.fetchTasks();
   },
 };
 </script>

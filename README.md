@@ -20,5 +20,10 @@ yarn build
 yarn lint
 ```
 
+### Local run
+```
+sudo npm i -g serve
+serve -s dist
+```
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
